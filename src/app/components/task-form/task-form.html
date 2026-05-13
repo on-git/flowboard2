@@ -1,0 +1,34 @@
+<div class="task-form">
+  <h2>Yeni görev</h2>
+
+  <div class="form-group">
+    <label>Başlık</label>
+    <input
+      type="text"
+      [value]="title()"
+      (input)="title.set($any($event.target).value)"
+      placeholder="Görev başlığı..."
+    />
+  </div>
+
+  <div class="form-group">
+    <label>Açıklama</label>
+    <textarea
+      [value]="description()"
+      (input)="description.set($any($event.target).value)"
+      placeholder="Görev açıklaması..."
+      rows="3"
+    ></textarea>
+  </div>
+
+  <div class="form-group">
+    <label>Öncelik</label>
+    <select [value]="priority()" (change)="priority.set($any($event.target).value)">
+      <option value="low">Düşük</option>
+      <option value="medium">Orta</option>
+      <option value="high">Yüksek</option>
+    </select>
+  </div>
+
+  <button (click)="onSubmit()" [disabled]="!title().trim()">Ekle</button>
+</div>
