@@ -1,0 +1,21 @@
+<div class="content">
+  <aside>
+    <app-task-form (taskAdded)="addTask($event)" />
+  </aside>
+
+  <main class="task-grid">
+    @for (task of tasks(); track task.id) {
+      <app-task-card
+        [task]="task"
+        [isSelected]="selectedTask()?.id === task.id"
+        (taskSelected)="onTaskSelected($event)"
+        (taskDeleted)="deleteTask($event)"
+        (statusUpdated)="updateStatus($event)"
+      />
+    }
+
+    @if (tasks().length === 0) {
+      <p class="empty">Henüz görev yok. Yeni bir tane ekle!</p>
+    }
+  </main>
+</div>

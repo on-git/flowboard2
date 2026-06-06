@@ -1,5 +1,6 @@
-import { Component, input, output } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { Task } from '../../models/task.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-task-card',
@@ -8,6 +9,8 @@ import { Task } from '../../models/task.model';
   styleUrl: './task-card.scss',
 })
 export class TaskCard {
+  private readonly router = inject(Router);
+
   task = input.required<Task>();
   isSelected = input<boolean>(false);
   taskSelected = output<Task>();
@@ -28,5 +31,10 @@ export class TaskCard {
       id: this.task().id,
       status: (event.target as HTMLSelectElement).value as Task['status'],
     });
+  }
+
+  goToDetail(event: MouseEvent): void {
+    event.stopPropagation();
+    this.router.navigate(['/task', this.task().id]);
   }
 }

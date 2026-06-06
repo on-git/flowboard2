@@ -10,7 +10,7 @@
     </span>
     <button class="delete-btn" (click)="onDeleteClick($event)">✕</button>
   </div>
-  <h3>{{ task().title }}</h3>
+  <h3 (click)="goToDetail($event)">{{ task().title }}</h3>
   <p>{{ task().description }}</p>
   <div class="task-footer">
     <select (change)="onStatusChange($event)" (click)="$event.stopPropagation()">

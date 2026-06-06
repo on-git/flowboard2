@@ -1,6 +1,14 @@
 <div class="app-container">
   <header>
-    <h1>{{ title() }}</h1>
+    <div class="header-top">
+      <h1>{{ title() }}</h1>
+      <nav>
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          Liste
+        </a>
+        <a routerLink="/board" routerLinkActive="active"> Board </a>
+      </nav>
+    </div>
     <div class="stats">
       <span class="stat todo">{{ todoCount() }} bekliyor</span>
       <span class="stat in-progress">{{ inProgressCount() }} devam ediyor</span>
@@ -8,21 +16,7 @@
     </div>
   </header>
 
-  <div class="content">
-    <aside>
-      <app-task-form (taskAdded)="addTask($event)" />
-    </aside>
-
-    <main class="task-grid">
-      @for (task of tasks(); track task.id) {
-        <app-task-card
-          [task]="task"
-          [isSelected]="selectedTask()?.id === task.id"
-          (taskSelected)="onTaskSelected($event)"
-          (taskDeleted)="deleteTask($event)"
-          (statusUpdated)="updateStatus($event)"
-        />
-      }
-    </main>
-  </div>
+  <main>
+    <router-outlet />
+  </main>
 </div>

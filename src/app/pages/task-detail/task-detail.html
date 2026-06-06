@@ -1,0 +1,32 @@
+<div class="detail-container">
+  <button class="back-btn" (click)="goBack()">← Geri</button>
+
+  @if (task()) {
+    <div class="detail-card">
+      <div class="detail-header">
+        <h2>{{ task()!.title }}</h2>
+        <span class="priority" [class]="'priority-' + task()!.priority">
+          {{ task()!.priority }}
+        </span>
+      </div>
+
+      <p class="description">{{ task()!.description }}</p>
+
+      <div class="status-section">
+        <label>Durum</label>
+        <select
+          (change)="updateStatus($any($event.target).value)"
+          (click)="$event.stopPropagation()"
+        >
+          <option value="todo" [selected]="task()!.status === 'todo'">Bekliyor</option>
+          <option value="in-progress" [selected]="task()!.status === 'in-progress'">
+            Devam ediyor
+          </option>
+          <option value="done" [selected]="task()!.status === 'done'">Tamamlandı</option>
+        </select>
+      </div>
+    </div>
+  } @else {
+    <p class="not-found">Görev bulunamadı.</p>
+  }
+</div>
