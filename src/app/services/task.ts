@@ -5,43 +5,21 @@ import { Task } from '../models/task.model';
   providedIn: 'root',
 })
 export class TaskService {
-  private readonly _tasks = signal<Task[]>(
-    JSON.parse(localStorage.getItem('flowboard-tasks') ?? 'null') ?? [
-      {
-        id: 1,
-        title: 'Angular öğren',
-        description: 'Signal, NgRx ve performans konularını çalış.',
-        status: 'in-progress',
-        priority: 'high',
-      },
-      {
-        id: 2,
-        title: 'FlowBoard arayüzünü tasarla',
-        description: 'Wireframe hazırla ve component yapısını belirle.',
-        status: 'todo',
-        priority: 'medium',
-      },
-      {
-        id: 3,
-        title: 'README yaz',
-        description: 'Projeyi dokümante et.',
-        status: 'done',
-        priority: 'low',
-      },
-    ],
-  );
-
-  constructor() {
-    effect(() => {
-      localStorage.setItem('flowboard-tasks', JSON.stringify(this._tasks()));
-    });
-  }
+  private readonly _tasks = signal<Task[]>(this.loadTasks());
 
   readonly filterStatus = signal<Task['status'] | 'all'>('all');
   readonly filterPriority = signal<Task['priority'] | 'all'>('all');
+  readonly searchQuery = signal<string>('');
 
   readonly filteredTasks = computed(() => {
     let tasks = this._tasks();
+    const query = this.searchQuery().toLowerCase().trim();
+
+    if (query) {
+      tasks = tasks.filter(
+        (t) => t.title.toLowerCase().includes(query) || t.description.toLowerCase().includes(query),
+      );
+    }
 
     if (this.filterStatus() !== 'all') {
       tasks = tasks.filter((t) => t.status === this.filterStatus());
@@ -64,12 +42,51 @@ export class TaskService {
 
   readonly doneCount = computed(() => this._tasks().filter((t) => t.status === 'done').length);
 
+  constructor() {
+    effect(() => {
+      localStorage.setItem('flowboard-tasks', JSON.stringify(this._tasks()));
+    });
+  }
+
+  private loadTasks(): Task[] {
+    const stored = localStorage.getItem('flowboard-tasks');
+    return stored
+      ? JSON.parse(stored)
+      : [
+          {
+            id: 1,
+            title: 'Angular öğren',
+            description: 'Signal, NgRx ve performans konularını çalış.',
+            status: 'in-progress',
+            priority: 'high',
+          },
+          {
+            id: 2,
+            title: 'FlowBoard arayüzünü tasarla',
+            description: 'Wireframe hazırla ve component yapısını belirle.',
+            status: 'todo',
+            priority: 'medium',
+          },
+          {
+            id: 3,
+            title: 'README yaz',
+            description: 'Projeyi dokümante et.',
+            status: 'done',
+            priority: 'low',
+          },
+        ];
+  }
+
   setFilterStatus(status: Task['status'] | 'all'): void {
     this.filterStatus.set(status);
   }
 
   setFilterPriority(priority: Task['priority'] | 'all'): void {
     this.filterPriority.set(priority);
+  }
+
+  setSearchQuery(query: string): void {
+    this.searchQuery.set(query);
   }
 
   addTask(task: Omit<Task, 'id'>): void {

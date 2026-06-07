@@ -3,7 +3,12 @@
     <app-task-form (taskAdded)="addTask($event)" />
 
     <div class="filters">
-      <h3>Filtrele</h3>
+      <h3>Ara & Filtrele</h3>
+
+      <div class="form-group">
+        <label>Ara</label>
+        <input type="text" placeholder="Görev ara..." (input)="onSearch($event)" />
+      </div>
 
       <div class="form-group">
         <label>Durum</label>
