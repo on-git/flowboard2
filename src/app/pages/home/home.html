@@ -1,6 +1,30 @@
 <div class="content">
   <aside>
     <app-task-form (taskAdded)="addTask($event)" />
+
+    <div class="filters">
+      <h3>Filtrele</h3>
+
+      <div class="form-group">
+        <label>Durum</label>
+        <select (change)="setFilterStatus($event)">
+          <option value="all">Tümü</option>
+          <option value="todo">Bekliyor</option>
+          <option value="in-progress">Devam ediyor</option>
+          <option value="done">Tamamlandı</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Öncelik</label>
+        <select (change)="setFilterPriority($event)">
+          <option value="all">Tümü</option>
+          <option value="low">Düşük</option>
+          <option value="medium">Orta</option>
+          <option value="high">Yüksek</option>
+        </select>
+      </div>
+    </div>
   </aside>
 
   <main class="task-grid">
@@ -15,7 +39,7 @@
     }
 
     @if (tasks().length === 0) {
-      <p class="empty">Henüz görev yok. Yeni bir tane ekle!</p>
+      <p class="empty">Görev bulunamadı.</p>
     }
   </main>
 </div>
