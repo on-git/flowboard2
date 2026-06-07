@@ -1,7 +1,9 @@
 <div class="detail-container">
   <button class="back-btn" (click)="goBack()">← Geri</button>
 
-  @if (task()) {
+  @if (isLoading()) {
+    <div class="loading">Yükleniyor...</div>
+  } @else if (task()) {
     <div class="detail-card">
       <div class="detail-header">
         <h2>{{ task()!.title }}</h2>

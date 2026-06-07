@@ -18,11 +18,11 @@ export class TaskApiService {
     return this.http.post<Task>(`${this.apiUrl}/tasks`, task);
   }
 
-  updateTask(id: number, changes: Partial<Task>): Observable<Task> {
+  updateTask(id: string, changes: Partial<Task>): Observable<Task> {
     return this.http.patch<Task>(`${this.apiUrl}/tasks/${id}`, changes);
   }
 
-  deleteTask(id: number): Observable<void> {
+  deleteTask(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/tasks/${id}`);
   }
 }

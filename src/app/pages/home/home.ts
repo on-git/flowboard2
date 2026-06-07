@@ -43,7 +43,7 @@ export class HomeComponent {
     this.selectedTask.set(task);
   }
 
-  protected deleteTask(id: number): void {
+  protected deleteTask(id: string): void {
     this.taskService.deleteTask(id);
     if (this.selectedTask()?.id === id) {
       this.selectedTask.set(null);
@@ -54,7 +54,7 @@ export class HomeComponent {
     this.taskService.addTask(task);
   }
 
-  protected updateStatus(task: { id: number; status: Task['status'] }): void {
+  protected updateStatus(task: { id: string; status: Task['status'] }): void {
     this.taskService.updateStatus(task.id, task.status);
   }
 

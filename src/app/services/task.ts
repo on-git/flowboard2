@@ -84,7 +84,7 @@ export class TaskService {
     });
   }
 
-  deleteTask(id: number): void {
+  deleteTask(id: string): void {
     this.api.deleteTask(id).subscribe({
       next: () => {
         this._tasks.update((tasks) => tasks.filter((t) => t.id !== id));
@@ -93,7 +93,7 @@ export class TaskService {
     });
   }
 
-  updateStatus(id: number, status: Task['status']): void {
+  updateStatus(id: string, status: Task['status']): void {
     this.api.updateTask(id, { status }).subscribe({
       next: (updatedTask) => {
         this._tasks.update((tasks) => tasks.map((t) => (t.id === id ? updatedTask : t)));

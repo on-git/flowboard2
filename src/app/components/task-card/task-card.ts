@@ -14,8 +14,8 @@ export class TaskCard {
   task = input.required<Task>();
   isSelected = input<boolean>(false);
   taskSelected = output<Task>();
-  taskDeleted = output<number>();
-  statusUpdated = output<{ id: number; status: Task['status'] }>();
+  taskDeleted = output<string>();
+  statusUpdated = output<{ id: string; status: Task['status'] }>();
 
   onCardClick(): void {
     this.taskSelected.emit(this.task());
