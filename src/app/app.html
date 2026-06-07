@@ -2,12 +2,17 @@
   <header>
     <div class="header-top">
       <h1>{{ title() }}</h1>
-      <nav>
-        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          Liste
-        </a>
-        <a routerLink="/board" routerLinkActive="active"> Board </a>
-      </nav>
+      <div class="header-right">
+        <nav>
+          <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            Liste
+          </a>
+          <a routerLink="/board" routerLinkActive="active"> Board </a>
+        </nav>
+        <button class="auth-btn" (click)="toggleAuth()">
+          {{ isLoggedIn() ? 'Çıkış Yap' : 'Giriş Yap' }}
+        </button>
+      </div>
     </div>
     <div class="stats">
       <span class="stat todo">{{ todoCount() }} bekliyor</span>

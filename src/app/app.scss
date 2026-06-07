@@ -54,3 +54,26 @@ nav {
     color: #0f5132;
   }
 }
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.auth-btn {
+  padding: 6px 16px;
+  background: transparent;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #666;
+  transition: all 0.15s ease;
+  width: auto;
+
+  &:hover {
+    border-color: #0d6efd;
+    color: #0d6efd;
+  }
+}

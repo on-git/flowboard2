@@ -1,0 +1,31 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+.login-card {
+  background: white;
+  border-radius: 8px;
+  padding: 32px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 360px;
+  width: 100%;
+
+  h2 {
+    margin-bottom: 8px;
+    color: #1a1a2e;
+  }
+
+  p {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  button {
+    width: 100%;
+  }
+}
