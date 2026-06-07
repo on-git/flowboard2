@@ -1,0 +1,26 @@
+{
+  "tasks": [
+    {
+      "id": "1",
+      "title": "Angular öğren",
+      "description": "Signal, NgRx ve performans konularını çalış.",
+      "status": "in-progress",
+      "priority": "high"
+    },
+    {
+      "id": "2",
+      "title": "FlowBoard arayüzünü tasarla",
+      "description": "Wireframe hazırla ve component yapısını belirle.",
+      "status": "done",
+      "priority": "medium"
+    },
+    {
+      "id": "3",
+      "title": "README yaz",
+      "description": "Projeyi dokümante et.",
+      "status": "done",
+      "priority": "low"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

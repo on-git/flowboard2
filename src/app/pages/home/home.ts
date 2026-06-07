@@ -22,7 +22,12 @@ export class HomeComponent {
   protected readonly filterStatus = this.taskService.filterStatus;
   protected readonly filterPriority = this.taskService.filterPriority;
 
+  protected readonly isLoading = this.taskService.isLoading;
+  protected readonly error = this.taskService.error;
+
   constructor() {
+    this.taskService.loadTasks();
+
     this.searchSubject
       .pipe(debounceTime(300), distinctUntilChanged(), takeUntilDestroyed())
       .subscribe((query) => {

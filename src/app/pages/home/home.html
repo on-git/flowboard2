@@ -32,19 +32,27 @@
     </div>
   </aside>
 
-  <main class="task-grid">
-    @for (task of tasks(); track task.id) {
-      <app-task-card
-        [task]="task"
-        [isSelected]="selectedTask()?.id === task.id"
-        (taskSelected)="onTaskSelected($event)"
-        (taskDeleted)="deleteTask($event)"
-        (statusUpdated)="updateStatus($event)"
-      />
-    }
+  <main>
+    @if (isLoading()) {
+      <div class="loading">Yükleniyor...</div>
+    } @else if (error()) {
+      <div class="error">{{ error() }}</div>
+    } @else {
+      <div class="task-grid">
+        @for (task of tasks(); track task.id) {
+          <app-task-card
+            [task]="task"
+            [isSelected]="selectedTask()?.id === task.id"
+            (taskSelected)="onTaskSelected($event)"
+            (taskDeleted)="deleteTask($event)"
+            (statusUpdated)="updateStatus($event)"
+          />
+        }
 
-    @if (tasks().length === 0) {
-      <p class="empty">Görev bulunamadı.</p>
+        @if (tasks().length === 0) {
+          <p class="empty">Görev bulunamadı.</p>
+        }
+      </div>
     }
   </main>
 </div>

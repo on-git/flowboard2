@@ -1,11 +1,16 @@
-import { Injectable, signal, computed, effect } from '@angular/core';
+import { Injectable, signal, computed, effect, inject } from '@angular/core';
 import { Task } from '../models/task.model';
+import { TaskApiService } from './task-api';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaskService {
-  private readonly _tasks = signal<Task[]>(this.loadTasks());
+  private readonly api = inject(TaskApiService);
+
+  private readonly _tasks = signal<Task[]>([]);
+  readonly isLoading = signal(false);
+  readonly error = signal<string | null>(null);
 
   readonly filterStatus = signal<Task['status'] | 'all'>('all');
   readonly filterPriority = signal<Task['priority'] | 'all'>('all');
@@ -42,39 +47,20 @@ export class TaskService {
 
   readonly doneCount = computed(() => this._tasks().filter((t) => t.status === 'done').length);
 
-  constructor() {
-    effect(() => {
-      localStorage.setItem('flowboard-tasks', JSON.stringify(this._tasks()));
-    });
-  }
+  loadTasks(): void {
+    this.isLoading.set(true);
+    this.error.set(null);
 
-  private loadTasks(): Task[] {
-    const stored = localStorage.getItem('flowboard-tasks');
-    return stored
-      ? JSON.parse(stored)
-      : [
-          {
-            id: 1,
-            title: 'Angular öğren',
-            description: 'Signal, NgRx ve performans konularını çalış.',
-            status: 'in-progress',
-            priority: 'high',
-          },
-          {
-            id: 2,
-            title: 'FlowBoard arayüzünü tasarla',
-            description: 'Wireframe hazırla ve component yapısını belirle.',
-            status: 'todo',
-            priority: 'medium',
-          },
-          {
-            id: 3,
-            title: 'README yaz',
-            description: 'Projeyi dokümante et.',
-            status: 'done',
-            priority: 'low',
-          },
-        ];
+    this.api.getTasks().subscribe({
+      next: (tasks) => {
+        this._tasks.set(tasks);
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        this.error.set('Görevler yüklenemedi.');
+        this.isLoading.set(false);
+      },
+    });
   }
 
   setFilterStatus(status: Task['status'] | 'all'): void {
@@ -90,18 +76,29 @@ export class TaskService {
   }
 
   addTask(task: Omit<Task, 'id'>): void {
-    const newTask: Task = {
-      ...task,
-      id: Date.now(),
-    };
-    this._tasks.update((tasks) => [...tasks, newTask]);
+    this.api.createTask(task).subscribe({
+      next: (newTask) => {
+        this._tasks.update((tasks) => [...tasks, newTask]);
+      },
+      error: () => this.error.set('Görev eklenemedi.'),
+    });
   }
 
   deleteTask(id: number): void {
-    this._tasks.update((tasks) => tasks.filter((t) => t.id !== id));
+    this.api.deleteTask(id).subscribe({
+      next: () => {
+        this._tasks.update((tasks) => tasks.filter((t) => t.id !== id));
+      },
+      error: () => this.error.set('Görev silinemedi.'),
+    });
   }
 
   updateStatus(id: number, status: Task['status']): void {
-    this._tasks.update((tasks) => tasks.map((t) => (t.id === id ? { ...t, status } : t)));
+    this.api.updateTask(id, { status }).subscribe({
+      next: (updatedTask) => {
+        this._tasks.update((tasks) => tasks.map((t) => (t.id === id ? updatedTask : t)));
+      },
+      error: () => this.error.set('Durum güncellenemedi.'),
+    });
   }
 }
