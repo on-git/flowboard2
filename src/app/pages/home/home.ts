@@ -1,4 +1,4 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, ChangeDetectionStrategy } from '@angular/core';
 import { TaskCard } from '../../components/task-card/task-card';
 import { TaskFormComponent } from '../../components/task-form/task-form';
 import { Task } from '../../models/task.model';
@@ -9,6 +9,7 @@ import { TaskService } from '../../services/task';
   imports: [TaskCard, TaskFormComponent],
   templateUrl: './home.html',
   styleUrl: './home.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {
   private readonly taskService = inject(TaskService);

@@ -1,4 +1,4 @@
-import { Component, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Task } from '../../models/task.model';
 
@@ -7,6 +7,7 @@ import { Task } from '../../models/task.model';
   imports: [FormsModule],
   templateUrl: './task-form.html',
   styleUrl: './task-form.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaskFormComponent {
   taskAdded = output<Omit<Task, 'id'>>();

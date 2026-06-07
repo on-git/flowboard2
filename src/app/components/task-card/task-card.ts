@@ -1,12 +1,12 @@
-import { Component, inject, input, output } from '@angular/core';
-import { Task } from '../../models/task.model';
+import { Component, input, output, inject, ChangeDetectionStrategy, effect } from '@angular/core';
 import { Router } from '@angular/router';
+import { Task } from '../../models/task.model';
 
 @Component({
   selector: 'app-task-card',
-  imports: [],
   templateUrl: './task-card.html',
   styleUrl: './task-card.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaskCard {
   private readonly router = inject(Router);
@@ -27,6 +27,7 @@ export class TaskCard {
   }
 
   onStatusChange(event: Event): void {
+    event.stopPropagation();
     this.statusUpdated.emit({
       id: this.task().id,
       status: (event.target as HTMLSelectElement).value as Task['status'],
