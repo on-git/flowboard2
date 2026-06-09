@@ -20,6 +20,13 @@
       "description": "Projeyi dokümante et.",
       "status": "done",
       "priority": "low"
+    },
+    {
+      "title": "test başlık",
+      "description": "test açıklama",
+      "status": "todo",
+      "priority": "low",
+      "id": "iosEcOmu08s"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

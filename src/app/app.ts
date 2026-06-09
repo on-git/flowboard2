@@ -1,7 +1,12 @@
 import { Component, signal, inject, effect } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/router';
-import { TaskService } from './services/task';
+import { Router, RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { AuthService } from './services/auth';
+import {
+  selectTodoCount,
+  selectInProgressCount,
+  selectDoneCount,
+} from './store/task/task.selectors';
 
 @Component({
   selector: 'app-root',
@@ -10,15 +15,15 @@ import { AuthService } from './services/auth';
   styleUrl: './app.scss',
 })
 export class App {
-  private readonly taskService = inject(TaskService);
+  private readonly store = inject(Store);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
   protected readonly title = signal('FlowBoard');
-  protected readonly todoCount = this.taskService.todoCount;
-  protected readonly inProgressCount = this.taskService.inProgressCount;
-  protected readonly doneCount = this.taskService.doneCount;
   protected readonly isLoggedIn = this.authService.isLoggedIn;
+  protected readonly todoCount = this.store.selectSignal(selectTodoCount);
+  protected readonly inProgressCount = this.store.selectSignal(selectInProgressCount);
+  protected readonly doneCount = this.store.selectSignal(selectDoneCount);
 
   constructor() {
     effect(() => {
